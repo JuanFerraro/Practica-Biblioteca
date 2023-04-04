@@ -1,13 +1,13 @@
-/* const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/notes-db-app', {
-    useCreateIndex: true,
+const mongoose = require('mongoose');
+mongoose.connect('mongodb+srv://JuanBarrios:Juan14Barrios14@mongodb1.dz8ee6z.mongodb.net/biblioteca_municipal', {
     useNewUrlParser: true,
-    useFindAndModify: false
+    useUnifiedTopology: true,
 })
     .then(db => console.log('DB esta conectada'))
-    .catch(err => console.error(err)); */
+    .catch(err => console.error(err));
+    
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+/* const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://JuanBarrios:Juan14Barrios14@mongodb1.dz8ee6z.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
@@ -16,10 +16,9 @@ const client = new MongoClient(uri, {
 });
 
 client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
+  const collection = client.db("Biblioteca").collection("Libros");
   client.close();
 })
-    .then(db => console.log('DB esta conectada'));
+    .then(db => console.log('DB esta conectada')); */
 
 

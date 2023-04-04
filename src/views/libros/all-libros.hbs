@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CRUD BIBLIOTECA</title>
+        {{!-- Bootstrap --}}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+        {{!-- Iconos --}}
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
+        {{!-- Mi CSS --}}
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+
+    <p>Navigation</p>
+    <hr>
+        <body>
+            <form action="/libros/new-libro">
+                <button class="btn btn-primary btn-block" type="submit">
+                    Agregar nuevo libro.
+                </button>
+            </form>
+            <p></p>
+            <div class="row">
+                {{#each libros}}
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title d-flex justify-content-between align-items-center">
+                                    {{titulo}} <a href="/libros/edit/{{_id}}"><i class="fas fa-edit"></i></a>
+                                </h5>
+                                <p>ISBN: {{ISBN}}</p>
+                                <p>Editorial: {{editorial}}</p>
+                                <p>Genero: {{genero}}</p>
+                                <p>Año de Publicación: {{añoPublicacion}}</p>
+                                <p>Autor: {{autor}}</p>
+                                <form action="/libros/delete/{{_id}}?_method=DELETE" method="POST">
+                                    {{!-- Input oculto para delete --}}
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="btn btn-danger btn-block btn-sm" type="submit">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="col-md-4 mx-auto">
+                        <div class="card">
+                            <center><h5>Aún no hay libros añadidos.</h5></center>
+                            <p> </p>
+                            <p> </p>
+                            <center><a href="/libros/add" class="btn btn-primary btn-block">Añade uno.</a></center>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        </body>
+    <hr>
+    <p>Footer</p>
+
+</html>
