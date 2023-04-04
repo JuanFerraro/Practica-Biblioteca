@@ -37,6 +37,7 @@ router.get('/libros/edit/:id', async (req, res) => {
 router.put('/libros/edit-libro/:id', async (req,res) => {
     const {titulo, ISBN, editorial, genero, añoPublicacion, autor} = req.body;
     await Libro.findByIdAndUpdate(req.params.id, {titulo, ISBN, editorial, genero, añoPublicacion, autor});
+    req.flash('success_msg', 'Libro actualizado.');
     res.redirect('/libros');
 });
 
