@@ -3,10 +3,18 @@ const router = express.Router();
 
 const User = require('../models/User');
 
+const passport = require('passport');
+
 /* Vista del sign-in */
 router.get('/users/signin', (req, res) => {
     res.render('users/signin');
 });
+
+router.post('/users/signin', passport.authenticate('local', {
+    successRedirect: '/libros',
+    failureRedirect: '/users/signin',
+    failureFlash: true
+}));
 
 /* Vista del sign-up */
 router.get('/users/signup', (req, res) => {
