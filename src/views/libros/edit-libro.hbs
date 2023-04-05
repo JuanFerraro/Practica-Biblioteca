@@ -19,7 +19,79 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<p>Navigation</p>
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">Biblioteca</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                {{#if user}}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Libros
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/libros">Libros</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/libros/add">Nuevo Libro</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Autores
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/autores">Autores</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/autores/add">Nuevo Autor</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Usuarios
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/users">Usuarios</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/users/add">Nuevo Usuario</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users/logout">Logout</a>
+                </li>
+                {{else}}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/users/signin">Ingresa<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users/signup">Registrate</a>
+                </li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <hr>
 
 <body>
@@ -32,24 +104,28 @@
                 {{!-- Input oculto para método put --}}
                 <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
-                    <input type="text" name="titulo" class="form-control" placeholder="titulo" value="{{libro.titulo}}" required>
+                    <input type="text" name="titulo" class="form-control" placeholder="titulo" value="{{libro.titulo}}"
+                        required>
                 </div>
                 <div class="form-group">
-                    <input type="text" name="ISBN" class="form-control" placeholder="titulo" value="{{libro.ISBN}}" required>
+                    <input type="text" name="ISBN" class="form-control" placeholder="ISBN" value="{{libro.ISBN}}"
+                        required>
                 </div>
                 <div class="form-group">
-                    <input type="text" name="editorial" class="form-control" placeholder="titulo"
+                    <input type="text" name="editorial" class="form-control" placeholder="editorial"
                         value="{{libro.editorial}}" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" name="genero" class="form-control" placeholder="titulo" value="{{libro.genero}}" required>
+                    <input type="text" name="genero" class="form-control" placeholder="genero" value="{{libro.genero}}"
+                        required>
                 </div>
                 <div class="form-group">
-                    <input type="text" name="añoPublicacion" class="form-control" placeholder="titulo"
+                    <input type="text" name="añoPublicacion" class="form-control" placeholder="año de publicacion"
                         value="{{libro.añoPublicacion}}" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" name="autor" class="form-control" placeholder="titulo" value="{{libro.autor}}" required>
+                    <input type="text" name="autor" class="form-control" placeholder="Autor" value="{{libro.autor}}"
+                        required>
                 </div>
                 <div class="form-group">
                     <center><button class="btn btn-primary btn-block" type="submit">Actualizar</button></center>
@@ -59,6 +135,16 @@
     </div>
 </body>
 <hr>
-<p>Footer</p>
+<footer>
+    <nav class="navbar fixed-bottom navbar-expand-lg navbar-dark" style="background-color: gray;">
+        <div class="container">
+            <h6>Hecho por: Juan Barrios Ferraro & Alejando Arteaga Restrepo</h6>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+</footer>
 
 </html>

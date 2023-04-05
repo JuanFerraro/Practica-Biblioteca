@@ -1,15 +1,18 @@
 const express = require('express');
 const router = express.Router();
-
 const User = require('../models/User');
-
 const passport = require('passport');
+/* Para validar autenticidad del usuario */
+const { isAuthenticated } = require('../helpers/auth');
+
+/* SIGNIN & SIGNUP */
 
 /* Vista del sign-in */
 router.get('/users/signin', (req, res) => {
     res.render('users/signin');
 });
 
+/* Si ingresa con credenciales correctas */
 router.post('/users/signin', passport.authenticate('local', {
     successRedirect: '/libros',
     failureRedirect: '/users/signin',
@@ -23,24 +26,24 @@ router.get('/users/signup', (req, res) => {
 
 /* Recibe datos de SIGNUP */
 router.post('/users/signup', async (req, res) => {
-    const {nombre, email, password, confirmarPassword, tipo} = req.body;
+    const { nombre, email, password, confirmarPassword, tipo } = req.body;
     const errors = [];
-    if(password != confirmarPassword){
-        errors.push({text: 'Las contraseñas no coinciden'});
+    if (password != confirmarPassword) {
+        errors.push({ text: 'Las contraseñas no coinciden' });
     }
-    if(password.lentgh < 4){
-        error.push({text: 'El password debe ser de almenos 4 caracteres.'})
+    if (password.lentgh < 4) {
+        error.push({ text: 'El password debe ser de almenos 4 caracteres.' })
     }
-    if(errors.length > 0){
-        res.render('users/signup', {errors, nombre, email, password, confirmarPassword})
-    }else{
-        const emailUser = await User.findOne({email: email});
-        if(emailUser){
+    if (errors.length > 0) {
+        res.render('users/signup', { errors, nombre, email, password, confirmarPassword })
+    } else {
+        const emailUser = await User.findOne({ email: email });
+        if (emailUser) {
             /* Mensaje de error */
-            errors.push({text: 'El emali ya tiene una cuenta'})
-            res.render('users/signup', {errors, nombre, email, password, confirmarPassword} )
-        }else{
-            const newUser = new User({nombre, email, password, tipo});
+            errors.push({ text: 'El emali ya tiene una cuenta' })
+            res.render('users/signup', { errors, nombre, email, password, confirmarPassword })
+        } else {
+            const newUser = new User({ nombre, email, password, tipo });
             newUser.password = await newUser.encryptPassword(password);
             await newUser.save();
             /* Mensaje de está registrado*/
@@ -50,5 +53,82 @@ router.post('/users/signup', async (req, res) => {
     }
 });
 
+/* LogOut termina la sesion */
+router.get('/users/logout', (req, res) => {
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
+})
+
+/* *************************************************************************************************** */
+/* *************************************************************************************************** */
+/* *************************************************************************************************** */
+/* CRUD DE USUARIOS */
+
+/* Mostrar añadir un nuevo libro */
+router.get('/users/add', isAuthenticated, (req, res) => {
+    res.render('users/new-user');
+});
+
+//* Añadir un nuevo Usuario */
+router.post('/users/new-user', isAuthenticated, async (req, res) => {
+    const { nombre, email, password, confirmarPassword, tipo } = req.body;
+    const emailUser = await User.findOne({ email: email });
+    /* Validaciones */
+    const errors = [];
+    if (password != confirmarPassword) {
+        errors.push({ text: 'Las contraseñas no coinciden' });
+    }
+    if (password.lentgh < 4) {
+        error.push({ text: 'El password debe ser de almenos 4 caracteres.' })
+    }
+    if (errors.length > 0) {
+        res.render('users/signup', { errors, nombre, email, password, confirmarPassword })
+    }
+    if (emailUser) {
+        /* Mensaje de error */
+        errors.push({ text: 'El emal ya tiene una cuenta' })
+        res.render('users/new-user', { errors, nombre, email, password, confirmarPassword })
+    } else {
+        const newUser = new User({ nombre, email, password, tipo });
+        newUser.password = await newUser.encryptPassword(password);
+        await newUser.save();
+        /* Mensaje de está registrado*/
+        req.flash('succes_msg', 'Estas registrado');
+        res.redirect('/users');
+    }
+});
+
+/* Redireccion del boton Añadir */
+router.get('/users', async (req, res) => {
+    const users = await User.find();
+    res.render('users/all-user', { users });
+});
+
+/* Redireccion del boton Añadir otro Usuario */
+router.get('/users/new-user', isAuthenticated, (req, res) => {
+    res.render('users/new-user');
+});
+
+/* Edicion de Usuario */
+router.get('/users/edit/:id', isAuthenticated, async (req, res) => {
+    const user = await User.findById(req.params.id)
+    res.render('users/edit-user', { user })
+});
+
+/* Envio de edicion de Usuario */
+router.put('/users/edit-user/:id', isAuthenticated, async (req, res) => {
+    const { nombre, email, password, tipo } = req.body;
+    await User.findByIdAndUpdate(req.params.id, { nombre, email, password, tipo });
+    req.flash('success_msg', 'Usuario actualizado.');
+    res.redirect('/users');
+});
+
+/* Eliminación de Usuario */
+router.delete('/users/delete/:id', isAuthenticated, async (req, res) => {
+    await User.findByIdAndDelete(req.params.id);
+    res.redirect('/users');
+})
 
 module.exports = router;

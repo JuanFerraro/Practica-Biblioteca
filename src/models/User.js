@@ -9,7 +9,7 @@ const UserSchema = new Schema({
     tipo: {type: String, require: true}
 });
 
-/* Metodos para cifrar contraseañ */
+/* Metodos para cifrar contraseña */
 UserSchema.methods.encryptPassword = async (password) => {
     const salt = await bcrypt.genSalt(10);
     const hash = bcrypt.hash(password, salt);

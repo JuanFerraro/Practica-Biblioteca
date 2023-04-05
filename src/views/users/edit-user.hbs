@@ -91,14 +91,45 @@
         </div>
     </div>
 </nav>
+
 <hr>
 
-<body class="container">
-    <div class="card">
+<body>
+    <div class="col-md-4 mx-auto">
+        <div class="card-header">
+            <h3>Editar Usuario</h3>
+        </div>
         <div class="card-body">
-            <h1>About</h1>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore repudiandae incidunt eligendi
-                necessitatibus delectus recusandae dolorem laudantium similique eaque et?</p>
+            <form action="/users/edit-user/{{user._id}}?_method=PUT" method="POST">
+                {{!-- Input oculto para método put --}}
+                <input type="hidden" name="_method" value="PUT">
+                <div class="form-group">
+                    <input type="text" name="nombre" class="form-control" placeholder="nombre" value="{{user.nombre}}"
+                        required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" class="form-control" placeholder="email" value="{{user.email}}"
+                        required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control" placeholder="password"
+                        value="{{user.password}}" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="confirmarPassword" class="form-control" placeholder="Confirme password"
+                        value="{{user.password}}" required>
+                </div>
+                <div class="form-group">
+                    <label for="rol">Selecciona tu rol:</label>
+                    <select name="tipo">
+                        <option value="Empleado">Empleado</option>
+                        <option value="Administrador">Administrador</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <center><button class="btn btn-primary btn-block" type="submit">Actualizar</button></center>
+                </div>
+            </form>
         </div>
     </div>
 </body>

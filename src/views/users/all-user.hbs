@@ -18,7 +18,6 @@
     {{!-- Mi CSS --}}
     <link rel="stylesheet" href="/css/style.css">
 </head>
-
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="/">Biblioteca</a>
@@ -91,18 +90,40 @@
         </div>
     </div>
 </nav>
+
+
 <hr>
 
-<body class="container">
-    <div class="card">
-        <div class="card-body">
-            <h1>About</h1>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore repudiandae incidunt eligendi
-                necessitatibus delectus recusandae dolorem laudantium similique eaque et?</p>
+<body>
+    <div class="container">
+        <h3>Hola {{user.nombre}}</h3>
+        <p></p>
+        <div class="row">
+            {{#each users}}
+            <div class="col-md-3" style="padding-bottom: 15px;">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex justify-content-between align-items-center">
+                            {{nombre}} <a href="/users/edit/{{_id}}"><i class="fas fa-edit"></i></a>
+                        </h5>
+                        <p>Email: {{email}}</p>
+                        <p>Tipo: {{tipo}}</p>
+                        <form action="/users/delete/{{_id}}?_method=DELETE" method="POST">
+                            {{!-- Input oculto para delete --}}
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-danger btn-block btn-sm" type="submit">
+                                Eliminar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
         </div>
     </div>
 </body>
 <hr>
+
 <footer>
     <nav class="navbar fixed-bottom navbar-expand-lg navbar-dark" style="background-color: gray;">
         <div class="container">
