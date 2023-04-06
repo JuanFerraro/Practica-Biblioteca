@@ -20,3 +20,12 @@ body{
     padding-left: 20px;
 }
 
+.welcome{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: baseline;
+    gap: 10px;
+}
+
+

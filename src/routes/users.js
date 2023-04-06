@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const Libro = require('../models/Libros');
+const Autor = require('../models/Autor');
 const passport = require('passport');
 /* Para validar autenticidad del usuario */
 const { isAuthenticated } = require('../helpers/auth');
 const { ensureAuthenticated } = require('../helpers/authEnsure');
-const { encryptPassword, matchPassword } = require('../helpers/bcryptUtil');
+const { encryptPassword } = require('../helpers/bcryptUtil');
 
 /* SIGNIN & SIGNUP */
 
@@ -32,8 +34,28 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
     res.render('dashboard', { user: req.user });
 });
 
-router.get('/view-empleado',  (req, res) => {
-    res.render('users/view-empleado', { user: req.user });
+router.get('/view-empleado',  async (req, res) => {
+    const libros = await Libro.find().sort({ añoPublicacion: 'desc' });
+    res.render('users/view-empleado', {libros});
+});
+
+router.post('/users/view-empleado', async (req, res) => {
+    const  { busquedaAutor }  = req.body;
+    /* Validaciones */
+    const errors = [];
+    console.log(busquedaAutor);
+    const identificacionAutor = await Autor.findOne( {identificacion: busquedaAutor});
+    console.log(identificacionAutor)
+    if(!identificacionAutor){
+        
+        errors.push({ text: 'El autor no ha sido encontrado.' });
+        const libros = await Libro.find()
+        res.render('users/view-empleado', { errors, libros });
+    } else {
+        const autorEncontrado = identificacionAutor.nombre;
+        const libros = await Libro.find ( {autor: autorEncontrado} );
+        res.render('users/view-empleado', { libros });
+    }
 });
 
 /* FIN PRUEBA **********************************************************************************/
@@ -47,6 +69,7 @@ router.get('/users/signup', (req, res) => {
 router.post('/users/signup', async (req, res) => {
     const { nombre, email, password, confirmarPassword, tipo } = req.body;
     const errors = [];
+    console.log(email)
     if (password != confirmarPassword) {
         errors.push({ text: 'Las contraseñas no coinciden' });
     }
@@ -63,7 +86,7 @@ router.post('/users/signup', async (req, res) => {
             res.render('users/signup', { errors, nombre, email, password, confirmarPassword })
         } else {
             const newUser = new User({ nombre, email, password, tipo });
-            newUser.password = await newUser.encryptPassword(password);
+            newUser.password = await encryptPassword(password)
             await newUser.save();
             /* Mensaje de está registrado*/
             req.flash('succes_msg', 'Estas registrado');

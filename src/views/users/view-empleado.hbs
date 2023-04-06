@@ -43,24 +43,7 @@
                         Libros
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/libros">Libros</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="/libros/add">Nuevo Libro</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Autores
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/autores">Autores</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="/autores/add">Nuevo Autor</a></li>
+                        <li><a class="dropdown-item" href="/view-empleado">Ver todos los libros</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -91,6 +74,46 @@
         </button>
     </div>
     {{/each}}
+    {{!-- c: --}}
+    <div class="container">
+        <div class="welcome">
+            <h3 style="color:white;">Bienvenido {{user.nombre}} </h3>
+        </div>
+        <form action="/users/view-empleado" class="d-flex"  method="POST">
+            <input name="busquedaAutor" class="form-control me-2" type="number" placeholder="Buscar libros por autor">
+            <button class="btn btn-outline-light" type="submit">Buscar</button>
+        </form>
+        <p></p>
+        <div class="row">
+            {{#each libros}}
+            <div class="col-md-3" style="padding-bottom: 15px;">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title d-flex justify-content-between align-items-center">
+                            {{titulo}}
+                        </h5>
+                        <p>ISBN: {{ISBN}}</p>
+                        <p>Editorial: {{editorial}}</p>
+                        <p>Genero: {{genero}}</p>
+                        <p>Año de Publicación: {{añoPublicacion}}</p>
+                        <p>Autor: {{autor}}</p>
+                    </div>
+                </div>
+            </div>
+            {{else}}
+            <div class="col-md-4 mx-auto">
+                <div class="card">
+                    <p> </p>
+                    <center>
+                        <h5>Aún no hay libros añadidos.</h5>
+                    </center>
+                    <p> </p>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
 
 </body>
 
