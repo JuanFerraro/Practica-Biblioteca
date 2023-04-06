@@ -4,6 +4,8 @@ const User = require('../models/User');
 const passport = require('passport');
 /* Para validar autenticidad del usuario */
 const { isAuthenticated } = require('../helpers/auth');
+const { ensureAuthenticated } = require('../helpers/authEnsure');
+const { encryptPassword, matchPassword } = require('../helpers/bcryptUtil');
 
 /* SIGNIN & SIGNUP */
 
@@ -13,11 +15,28 @@ router.get('/users/signin', (req, res) => {
 });
 
 /* Si ingresa con credenciales correctas */
-router.post('/users/signin', passport.authenticate('local', {
+/* router.post('/users/signin', passport.authenticate('local', {
     successRedirect: '/libros',
     failureRedirect: '/users/signin',
     failureFlash: true
+})); */
+
+/* PRUEBA **************************************************************************************/
+router.post('/users/signin', passport.authenticate('local', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/users/signin',
+    failureFlash: true
 }));
+
+router.get('/dashboard', ensureAuthenticated, (req, res) => {
+    res.render('dashboard', { user: req.user });
+});
+
+router.get('/view-empleado',  (req, res) => {
+    res.render('users/view-empleado', { user: req.user });
+});
+
+/* FIN PRUEBA **********************************************************************************/
 
 /* Vista del sign-up */
 router.get('/users/signup', (req, res) => {
@@ -119,10 +138,34 @@ router.get('/users/edit/:id', isAuthenticated, async (req, res) => {
 
 /* Envio de edicion de Usuario */
 router.put('/users/edit-user/:id', isAuthenticated, async (req, res) => {
-    const { nombre, email, password, tipo } = req.body;
-    await User.findByIdAndUpdate(req.params.id, { nombre, email, password, tipo });
-    req.flash('success_msg', 'Usuario actualizado.');
-    res.redirect('/users');
+    const { nombre, email, password, confirmarPassword, tipo } = req.body;
+    /* Validaciones */
+    const errors = [];
+    if (password != confirmarPassword) {
+        errors.push({ text: 'Las contraseñas no coinciden' });
+    }
+    if (password.lentgh < 4) {
+        error.push({ text: 'El password debe ser de almenos 4 caracteres.' })
+    }
+    if (errors.length > 0) {
+        res.render('users/edit-user', { errors, nombre, email, password, confirmarPassword, tipo })
+    } else {
+        try {
+            const user = await User.findById(req.params.id);
+            const encryptedPassword = await user.encryptPassword(password);
+            user.nombre = nombre;
+            user.email = email;
+            user.password = encryptedPassword;
+            user.tipo = tipo;
+            await user.save();
+            req.flash('success_msg', 'Usuario actualizado.');
+            res.redirect('/users');
+        } catch (err) {
+            console.log(err);
+            req.flash('error_msg', 'Ha ocurrido un error al actualizar el usuario.');
+            res.redirect('/users');
+        }
+    }
 });
 
 /* Eliminación de Usuario */
