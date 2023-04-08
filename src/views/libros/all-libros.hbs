@@ -95,9 +95,23 @@
 <hr>
 
 <body>
+    {{!-- ERROR --}}
+    {{#each errors}}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{text}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {{/each}}
     <div class="container">
         <h3>Hola {{user.nombre}}</h3>
-        <p></p>
+        {{!-- Busqueda nombre de libro --}}
+        <form action="/libros/all-libros/busqueda" class="d-flex"  method="POST">
+            <input name="busquedaLibro" class="form-control me-2" type="text" placeholder="Buscar libros">
+            <button class="btn btn-outline-light" type="submit">Buscar</button>
+        </form>
+        <p> </p>
         <div class="row">
             {{#each libros}}
             <div class="col-md-3" style="padding-bottom: 15px;">

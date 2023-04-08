@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Libro = require('../models/Libros');
 const Autor = require('../models/Autor');
+const User = require('../models/User');
 /* Para validar autenticidad del usuario */
 const { isAuthenticated } = require('../helpers/auth');
 
@@ -35,7 +36,7 @@ router.post('/libros/new-libro', isAuthenticated, async (req, res) => {
 });
 
 /* Redireccion del boton Añadir */
-router.get('/libros', async (req, res) => {
+router.get('/libros', isAuthenticated, async (req, res) => {
     const libros = await Libro.find().sort({ añoPublicacion: 'desc' });
     res.render('libros/all-libros', { libros });
 });
@@ -57,6 +58,23 @@ router.put('/libros/edit-libro/:id', isAuthenticated, async (req, res) => {
     await Libro.findByIdAndUpdate(req.params.id, { titulo, ISBN, editorial, genero, añoPublicacion, autor });
     req.flash('success_msg', 'Libro actualizado.');
     res.redirect('/libros');
+});
+
+/* Busqueda libro por nombre */
+router.post('/libros/all-libros/busqueda', async (req, res) => {
+    const { busquedaLibro } = req.body;
+    /* Validaciones */
+    const errors = [];
+    const regex = new RegExp(busquedaLibro, 'i');
+    const libroABuscar = await Libro.findOne({ titulo: regex });
+    if (!libroABuscar) {
+        errors.push({ text: 'El libro no ha sido encontrado.' });
+        const libros = await Libro.find()
+        res.render('libros/all-libros', { errors, libros });
+    } else {
+        const libros = [libroABuscar];
+        res.render('libros/all-libros', { libros });
+    }
 });
 
 /* Eliminación de libro */

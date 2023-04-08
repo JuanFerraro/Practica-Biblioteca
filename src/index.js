@@ -5,6 +5,7 @@ const session = require('express-session');
 let exphbs = require('express-handlebars');
 const flash = require('connect-flash');
 const passport = require('passport');
+
 //Initiliazations
 const app = express();
 require('./database');
@@ -13,6 +14,7 @@ require('./config/passport');
 //Setting
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
+/* No idea porque defaultLayout no funciona.*/
 app.set('.hbs', exphbs.engine({
     defaultLayout: 'main',
     layoutsDir: path.join(app.get('views'), 'layouts'),

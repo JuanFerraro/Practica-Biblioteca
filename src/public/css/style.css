@@ -1,26 +1,28 @@
-body{
-    background: #616161;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #9bc5c3, #616161);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #9bc5c3, #616161); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    
+body {
+    background: linear-gradient(to right, #9bc5c3, #616161);
     margin: 20px 20px 20px 20px;
     margin-top: 50px;
 }
 
-.form-group{
+.form-group {
     margin-bottom: 6px;
 }
 
-.imagenes{
+.imagenes {
     width: 50%;
     border-radius: 20%;
 }
 
-.navbar-brand{
+.imagenes-carousel {
+    width: 70%;
+    border-radius: 20%;
+}
+
+.navbar-brand {
     padding-left: 20px;
 }
 
-.welcome{
+.welcome {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -28,4 +30,37 @@ body{
     gap: 10px;
 }
 
+.contenedor {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: auto auto;
+    column-gap: 10px;
+    row-gap: 15px;
+    justify-items: center;
+}
 
+.contenedor h5 {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.5;
+    word-spacing: 0.2em;
+    font-weight: 700;
+    font-size: 32px;
+}
+
+.item-f {
+    width: 60%;
+}
+
+.titulo{
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.5;
+    word-spacing: 0.2em;
+    font-weight: 1000;
+    font-size: 42px;
+}
+
+.encabezado{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}

@@ -23,7 +23,6 @@ router.get('/users/signin', (req, res) => {
     failureFlash: true
 })); */
 
-/* PRUEBA **************************************************************************************/
 router.post('/users/signin', passport.authenticate('local', {
     successRedirect: '/dashboard',
     failureRedirect: '/users/signin',
@@ -34,31 +33,39 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
     res.render('dashboard', { user: req.user });
 });
 
-router.get('/view-empleado',  async (req, res) => {
+/* Vista Empleado */
+router.get('/view-empleado', isAuthenticated, async (req, res) => {
     const libros = await Libro.find().sort({ añoPublicacion: 'desc' });
-    res.render('users/view-empleado', {libros});
+    res.render('users/view-empleado', { libros });
 });
 
+/* Home vista empleado */
+router.get('/home-empleado', isAuthenticated, async (req, res) => {
+    res.render('users/home-empleado');
+});
+
+/* About vista empleado */
+router.get('/about-empleado', isAuthenticated, async (req, res) => {
+    res.render('users/about-empleado');
+});
+
+/* Busqueda por Autor. */
 router.post('/users/view-empleado', async (req, res) => {
-    const  { busquedaAutor }  = req.body;
+    const { busquedaAutor } = req.body;
     /* Validaciones */
     const errors = [];
-    console.log(busquedaAutor);
-    const identificacionAutor = await Autor.findOne( {identificacion: busquedaAutor});
-    console.log(identificacionAutor)
-    if(!identificacionAutor){
-        
+    const identificacionAutor = await Autor.findOne({ identificacion: busquedaAutor });
+    if (!identificacionAutor) {
+
         errors.push({ text: 'El autor no ha sido encontrado.' });
         const libros = await Libro.find()
         res.render('users/view-empleado', { errors, libros });
     } else {
         const autorEncontrado = identificacionAutor.nombre;
-        const libros = await Libro.find ( {autor: autorEncontrado} );
+        const libros = await Libro.find({ autor: autorEncontrado });
         res.render('users/view-empleado', { libros });
     }
 });
-
-/* FIN PRUEBA **********************************************************************************/
 
 /* Vista del sign-up */
 router.get('/users/signup', (req, res) => {
@@ -134,7 +141,7 @@ router.post('/users/new-user', isAuthenticated, async (req, res) => {
         res.render('users/new-user', { errors, nombre, email, password, confirmarPassword })
     } else {
         const newUser = new User({ nombre, email, password, tipo });
-        newUser.password = await newUser.encryptPassword(password);
+        newUser.password = await encryptPassword(password);
         await newUser.save();
         /* Mensaje de está registrado*/
         req.flash('succes_msg', 'Estas registrado');
@@ -175,11 +182,18 @@ router.put('/users/edit-user/:id', isAuthenticated, async (req, res) => {
     } else {
         try {
             const user = await User.findById(req.params.id);
-            const encryptedPassword = await user.encryptPassword(password);
-            user.nombre = nombre;
-            user.email = email;
-            user.password = encryptedPassword;
-            user.tipo = tipo;
+            if (user.password != password) {
+                const encryptedPassword = await encryptPassword(password);
+                user.nombre = nombre;
+                user.email = email;
+                user.password = encryptedPassword;
+                user.tipo = tipo;
+            } else {
+                const encryptedPassword = await encryptPassword(password);
+                user.nombre = nombre;
+                user.email = email;
+                user.tipo = tipo;
+            };
             await user.save();
             req.flash('success_msg', 'Usuario actualizado.');
             res.redirect('/users');

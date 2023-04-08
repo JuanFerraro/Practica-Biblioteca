@@ -96,15 +96,121 @@
 <body>
 
     <div class="container">
-        <h1 class="display-4">BIBLIOTECA</h1>
-        <p class"lead">TEXTO TEXTO</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates saepe aliquid magni aperiam esse, quas
-            tenetur libero at dolorum voluptatum perferendis et beatae dicta</p>
-        <a href="/users/signin" class="btn btn-primary btn-lg">Ir ahora</a>
+        <section class="encabezado">
+            <h1 class="titulo">BIBLIOTECA GGM</h1>
+            <h6>"La literatura es un placer, que solo se debe leer por placer"<br>Gabriel Garcia Marquez</h6>
+        </section>
+        <hr>
+        <section class="contenedor">
+            <h5>
+                ¡Bienvenido a la Biblioteca Municipal GGM! <br><br>
+                Acá podrás encontrar una selección de libros
+                para
+                satisfacer tus necesidades de lectura. <br>
+            </h5>
+
+            {{#if user}}
+            <div id="carouselExampleFade" class="carousel slide carousel-fade">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="/images/biblioteca4.jpg" class="mx-auto d-block m-4 imagenes-carousel"
+                            alt="Biblioteca">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/images/biblioteca2.jpg" class="mx-auto d-block m-4 imagenes-carousel"
+                            alt="Biblioteca">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/images/biblioteca3.jpg" class="mx-auto d-block m-4 imagenes-carousel"
+                            alt="Biblioteca">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            {{else}}
+            <div class="item-f">
+                <div class="mx-auto">
+                    <div class="card bg-dark">
+                        <div class="card-header">
+                            <center>
+                                <h2 style="color: white">Registrate</h2>
+                            </center>
+                        </div>
+                        <div class="card-body">
+                            <form action="/users/signup" method="POST">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="nombre" value="{{nombre}}"
+                                        placeholder="Nombre de usuario" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control" name="email" placeholder="Email"
+                                        value="{{email}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="password" placeholder="Password"
+                                        value="{{password}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="confirmarPassword"
+                                        placeholder="Confirma el password" value="{{confirmarPassword}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" name="tipo" placeholder="Empleado"
+                                        value="Empleado" readonly>
+                                </div>
+                                <p> </p>
+                                <div class="form-group">
+                                    <center>
+                                        <h6 style="color: white">Usted se está registrando como empleado</h6>
+                                    </center>
+                                </div>
+                                <p> </p>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        Registrate
+                                    </button>
+                                </div>
+                            </form>
+                            <form action="/users/signin">
+                                <div class="form-group">
+                                    <center>
+                                        <h6 style="color: white">¿Ya tienes una cuenta? Ingresa aquí</h6>
+                                    </center>
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        Ingresa aquí
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+        </section>
     </div>
     <hr>
+
 </body>
 
-<p>Footer</p>
+<footer>
+    <nav class="navbar fixed-bottom navbar-expand-lg navbar-dark" style="background-color: gray;">
+        <div class="container">
+            <h6>Hecho por: Juan Barrios Ferraro & Alejando Arteaga Restrepo</h6>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+</footer>
 
 </html>
