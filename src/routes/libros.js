@@ -61,7 +61,7 @@ router.put('/libros/edit-libro/:id', isAuthenticated, async (req, res) => {
 });
 
 /* Busqueda libro por nombre */
-router.post('/libros/all-libros/busqueda', async (req, res) => {
+router.post('/libros/all-libros/busqueda', isAuthenticated, async (req, res) => {
     const { busquedaLibro } = req.body;
     /* Validaciones */
     const errors = [];

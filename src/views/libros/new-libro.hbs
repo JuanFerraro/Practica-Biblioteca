@@ -31,9 +31,7 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
-                </li>
+                
             </ul>
             <ul class="navbar-nav ms-auto">
                 {{#if user}}
@@ -105,9 +103,9 @@
     </div>
     {{/each}}
     <div class="col-md-4 mx-auto">
-        <div class="card">
+        <div class="card bg-dark">
             <div class="card-header">
-                <h3>Nuevo libro</h3>
+                <h3 style="color: white;">Nuevo libro</h3>
             </div>
             <div class="card-body">
                 <form action="/libros/new-libro" method="POST">

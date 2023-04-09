@@ -31,9 +31,6 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/home-empleado">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about-empleado">About</a>
-                </li>
             </ul>
             <ul class="navbar-nav ms-auto">
                 {{#if user}}
@@ -87,9 +84,9 @@
         <div class="row">
             {{#each libros}}
             <div class="col-md-3" style="padding-bottom: 15px;">
-                <div class="card">
+                <div class="card bg-dark">
                     <div class="card-body">
-                        <h5 class="card-title d-flex justify-content-between align-items-center">
+                        <h5 class="card-title d-flex justify-content-between align-items-center" style="color: white;">
                             {{titulo}}
                         </h5>
                         <p>ISBN: {{ISBN}}</p>

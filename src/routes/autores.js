@@ -29,7 +29,7 @@ router.post('/autores/new-autor', isAuthenticated, async (req, res) => {
 });
 
 /* Redireccion del boton Añadir */
-router.get('/autores', async (req, res) => {
+router.get('/autores', isAuthenticated, async (req, res) => {
     const autores = await Autor.find();
     res.render('autores/all-autores', { autores });
 });
@@ -59,7 +59,9 @@ router.put('/autores/edit-autor/:id', isAuthenticated, async (req, res) => {
 
 /* Eliminación de Autor */
 router.delete('/autores/delete/:id', isAuthenticated, async (req, res) => {
-    await Autor.findByIdAndDelete(req.params.id);
+    const autorEliminado = await Autor.findByIdAndDelete(req.params.id);
+    /* Eliminar los libros que escribió el autor*/
+    await Libro.deleteMany({ autor: autorEliminado.nombre });
     res.redirect('/autores');
 })
 

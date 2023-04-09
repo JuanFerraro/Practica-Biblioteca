@@ -16,13 +16,6 @@ router.get('/users/signin', (req, res) => {
     res.render('users/signin');
 });
 
-/* Si ingresa con credenciales correctas */
-/* router.post('/users/signin', passport.authenticate('local', {
-    successRedirect: '/libros',
-    failureRedirect: '/users/signin',
-    failureFlash: true
-})); */
-
 router.post('/users/signin', passport.authenticate('local', {
     successRedirect: '/dashboard',
     failureRedirect: '/users/signin',
@@ -50,7 +43,7 @@ router.get('/about-empleado', isAuthenticated, async (req, res) => {
 });
 
 /* Busqueda por Autor. */
-router.post('/users/view-empleado', async (req, res) => {
+router.post('/users/view-empleado', isAuthenticated, async (req, res) => {
     const { busquedaAutor } = req.body;
     /* Validaciones */
     const errors = [];
@@ -150,7 +143,7 @@ router.post('/users/new-user', isAuthenticated, async (req, res) => {
 });
 
 /* Redireccion del boton Añadir */
-router.get('/users', async (req, res) => {
+router.get('/users', isAuthenticated, async (req, res) => {
     const users = await User.find();
     res.render('users/all-user', { users });
 });

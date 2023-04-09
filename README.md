@@ -1,2 +1,2 @@
 # Practica-Biblioteca
-Practica de creación de CRUD utilizando Node.js y MongoDB.
+Practica de creación de CRUD utilizando Node.js, MongoDB y hbs.
